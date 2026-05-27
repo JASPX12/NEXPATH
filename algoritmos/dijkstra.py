@@ -25,7 +25,7 @@ def dijkstra(grafo, inicio, fin, alpha, beta):
 
             vecino = arista["para"]
             nombre_calle = arista["nombre"]
-            costo_arista = alpha * float(arista["dist"]) + beta * float(arista["peligro"])
+            costo_arista = (alpha * float(arista["dist"])) + (beta * float(arista["peligro"]))
             nuevo_costo = costo_actual + costo_arista
 
             if nuevo_costo < costos[vecino]:
