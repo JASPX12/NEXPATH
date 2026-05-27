@@ -1,4 +1,5 @@
 from graph.grafo import Grafo
+import time
 from datos.cargar_datos import save_data
 from algoritmos import bellman_ford, dijkstra
 from visualizacion.mapa import visualizar_ruta_dijkstra, visualizar_ruta_bellman
@@ -36,21 +37,28 @@ g = crear_grafo_con_datos(datos)
 inicio = (-75.598766, 6.2320727)
 fin = (-75.5705202, 6.2106275)
 
-
-#resultado_dijkstra = dijkstra.dijkstra(g, inicio, fin, alpha=1, beta=1)
-#print("Calculando la ruta óptima...")
+inicio_dijkstra = time.time()
+resultado_dijkstra = dijkstra.dijkstra(g, inicio, fin, alpha=1, beta=1)
+print("Calculando la ruta óptima...")
 #
+fin_dijkstra = time.time()
+print(f"tiempo de ejecucion dijkstra, {fin_dijkstra - inicio_dijkstra} segundos" )
+
 #print("\nResultado de la búsqueda:")
 #print(resultado_dijkstra)
 #
 #print("\nGenerando mapa en Folium...")
 #visualizar_ruta_dijkstra(resultado_dijkstra, inicio, nombre_archivo="index.html")
 
+inicio_bellman = time.time()
 print("Calculando la ruta óptima...")
 resultado_bellman_ford = bellman_ford.Bellman_Ford(g, inicio, fin, alpha=1, beta=1)
+fin_bellman = time.time()
+#print("\nResultado de la búsqueda:")
+#print(resultado_bellman_ford)
 
-print("\nResultado de la búsqueda:")
-print(resultado_bellman_ford)
+print(f"tiempo de ejecucion bell, {fin_bellman - inicio_bellman} segundos" )
+
 
 print("\nGenerando mapa en Folium...")
 visualizar_ruta_bellman(resultado_bellman_ford, inicio, nombre_archivo="index.html")
