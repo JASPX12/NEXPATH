@@ -2,7 +2,7 @@ from graph.grafo import Grafo
 import time
 from datos.cargar_datos import save_data
 from algoritmos import bellman_ford, dijkstra
-from visualizacion.mapa import visualizar_ruta_dijkstra, visualizar_ruta_bellman
+from visualizacion.mapa import visualizar_ruta
 
 def coord_a_tupla(coord_str):
     coord_str = coord_str.strip("()")
@@ -48,7 +48,7 @@ print(f"tiempo de ejecucion dijkstra, {fin_dijkstra - inicio_dijkstra} segundos"
 #print(resultado_dijkstra)
 #
 #print("\nGenerando mapa en Folium...")
-#visualizar_ruta_dijkstra(resultado_dijkstra, inicio, nombre_archivo="index.html")
+#visualizar_ruta(resultado_dijkstra, inicio, nombre_archivo="index.html")
 
 inicio_bellman = time.time()
 print("Calculando la ruta óptima...")
@@ -61,4 +61,4 @@ print(f"tiempo de ejecucion bell, {fin_bellman - inicio_bellman} segundos" )
 
 
 print("\nGenerando mapa en Folium...")
-visualizar_ruta_bellman(resultado_bellman_ford, inicio, nombre_archivo="index.html")
+visualizar_ruta(resultado_bellman_ford, inicio, nombre_archivo="index.html")
