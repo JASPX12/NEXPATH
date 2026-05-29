@@ -2,3 +2,6 @@ pandas
 folium
 geopandas
 matplotlib
+flask
+flask-cors
+jinja2

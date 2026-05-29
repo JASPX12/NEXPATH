@@ -1,31 +1,51 @@
 
-   # **🧭# NEXPATH -- Rutas Óptimas y Seguras en Medellín**
+# 🧭 NEXPATH — Rutas Óptimas y Seguras en Medellín
 
-## **🎯 Objetivo general**
+Sistema que calcula y visualiza rutas óptimas entre zonas de Medellín considerando **distancia** y **riesgo de acoso**, implementando los algoritmos **Dijkstra** y **Bellman-Ford** desde cero.
 
-Diseñar e implementar un sistema que permita calcular y visualizar rutas óptimas entre dos puntos de la ciudad de Medellín, considerando simultáneamente la **distancia** y el **riesgo de acoso**.  
-El sistema debe ofrecer al usuario distintas **estrategias algorítmicas** y permitir la **configuración de preferencias** (prioridad por seguridad o rapidez), con el fin de comparar precisión, tiempo de cómputo y comportamiento de los algoritmos.
+## 🚀 Instalación
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## **🧩 Contexto**
+## ▶️ Uso
 
-Se proporciona un [**dataset geográfico**](https://drive.google.com/file/d/11cOIpKB_OrAWPTm2IDFH-Tz_vDb4i-dx/view?usp=sharing) que describe la red vial de Medellín. Cada registro corresponde a un tramo de calle con los siguientes campos:
+```bash
+python app.py
+```
 
-| Campo | Descripción |
-| :---- | :---- |
-| `name` | Nombre de la calle o segmento. |
-| `origin` | Coordenadas geográficas del punto de inicio `(long, lat)`. |
-| `destination` | Coordenadas geográficas del punto final `(long, lat)`. |
-| `length` | Longitud del tramo (en metros). |
-| `oneway` | Indica si la vía es unidireccional. |
-| `harassmentRisk` | Valor entre 0 y 1 que indica el nivel de riesgo percibido. |
-| `geometry` | Representación geométrica LINESTRING del tramo. |
+Luego abre **http://localhost:5000** en el navegador.
 
-A partir de estos datos, se debe construir un **grafo dirigido y ponderado**, donde cada arista tenga un costo definido por:
+## ⚙️ Parámetros configurables
+
+| Parámetro | Descripción |
+|---|---|
+| **Alpha (α)** | Peso de la distancia (0 = ignora distancia, 1 = solo distancia) |
+| **Beta (β)** | Peso del riesgo de acoso (0 = ignora riesgo, 1 = solo seguridad) |
+| **Preferencia** | Balanceado (α=0.5, β=0.5) / Más Rápido (α=1, β=0) / Más Seguro (α=0, β=1) |
+| **Modo** | Ambos algoritmos / Solo Dijkstra / Solo Bellman-Ford |
+
+## 📊 Fórmula de costo
 
 **C(e) \= α×length(e) \+ β×harassmentRisk(e)**
 
 donde:
 
 * `α` y `β` son pesos ajustables definidos por el usuario según su preferencia entre **rapidez** y **seguridad**.
+
+## 🗂️ Estructura del proyecto
+
+NEXPATH/
+├── app.py                  # Servidor Flask y lógica principal
+├── algoritmos/
+│   ├── dijkstra.py         # Implementación de Dijkstra
+│   └── bellman_ford.py     # Implementación de Bellman-Ford
+├── graph/
+│   └── grafo.py            # Estructura del grafo (lista de adyacencia)
+├── datos/
+│   ├── cargar_datos.py     # Carga del CSV
+│   └── calles_de_medellin_con_acoso.csv
+├── visualizacion/
+│   └── mapa.py             # Generación del mapa con Folium
+└── requirements.txt

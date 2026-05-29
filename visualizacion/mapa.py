@@ -1,38 +1,44 @@
 import folium
 from folium import plugins
-from algoritmos import dijkstra, bellman_ford
 
-def visualizar_ruta(algoritmo: dict, inicio: tuple, nombre_archivo="index.html"):
-    
-    centro_mapa = [inicio[1], inicio[0]]
-    m = folium.Map(location=centro_mapa, zoom_start=14)
+def generar_mapa(res_dijkstra: dict, res_bellman: dict, origen: tuple) -> str:
+    centro = [origen[1], origen[0]]
+    m = folium.Map(location=centro, zoom_start=14, tiles="CartoDB dark_matter")
 
-    ruta_original = algoritmo["ruta"]
-
-
-    ruta_folium = [[coord[1], coord[0]] for coord in ruta_original]
-
-
-    if ruta_folium:
-        folium.Marker(
-            location=ruta_folium[0],
-            popup="Inicio de la ruta",
-            icon=folium.Icon(color="green", icon="play")
-        ).add_to(m)
-        
-        folium.Marker(
-            location=ruta_folium[-1],
-            popup="Destino final",
-            icon=folium.Icon(color="red", icon="stop")
+    ruta_dijk = [[c[1], c[0]] for c in res_dijkstra.get("ruta", []) if len(c) == 2]
+    if ruta_dijk:
+        plugins.AntPath(
+            locations=ruta_dijk,
+            color="#4cd7f6",
+            weight=5,
+            dash_array=[20, 10],
+            delay=800,
+            popup="Dijkstra"
         ).add_to(m)
 
-    plugins.AntPath(
-        locations=ruta_folium,
-        color = "blue", 
-        dash_array = [50,10]
-    ).add_to(m)
+    ruta_bell = [[c[1], c[0]] for c in res_bellman.get("ruta", []) if len(c) == 2]
+    if ruta_bell:
+        plugins.AntPath(
+            locations=ruta_bell,
+            color="#ffb786",
+            weight=5,
+            dash_array=[20, 10],
+            delay=800,
+            popup="Bellman-Ford"
+        ).add_to(m)
 
-    m.fit_bounds(m.get_bounds())
-    
-    m.save(nombre_archivo)
-    return m
+    if ruta_dijk:
+        folium.Marker(location=ruta_dijk[0], popup="Origen",
+            icon=folium.Icon(color="green", icon="play")).add_to(m)
+        folium.Marker(location=ruta_dijk[-1], popup="Destino",
+            icon=folium.Icon(color="red", icon="stop")).add_to(m)
+    if ruta_bell:
+        folium.Marker(location=ruta_bell[0], popup="Origen",
+            icon=folium.Icon(color="green", icon="play")).add_to(m)
+        folium.Marker(location=ruta_bell[-1], popup="Destino",
+            icon=folium.Icon(color="red", icon="stop")).add_to(m)
+
+    if ruta_dijk or ruta_bell:
+        m.fit_bounds(m.get_bounds())
+
+    return m._repr_html_()
